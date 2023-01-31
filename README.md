@@ -10,16 +10,19 @@ This library also supports the RW1990 which allows to modify the ID of the iButt
 Typically, the readers have two wires, one for data/power and one for ground. The
 1-wire protocol expects the data wire to be pulled up to power by a resistor.
 
-Typically, iButton devices use very little power, and higher values of the pull-up
-resistor are used to reduce the power consumption. However, for advanced
-functionality, like writing data to the iButton, more power is needed. Sometimes,
-choosing a lower resistance is good enough.
-
-For simplicity, we recommend a 4.7k resistor when no special functionality is needed,
-and a 2.2k resistor otherwise.
+In most cases, the pull-up of the ESP32 is strong enough to power devices that
+are connected to the 1-wire bus. As such, no additional components are needed.
 
 See https://pdfserv.maximintegrated.com/en/an/AN4255.pdf for more information on
 how to power 1-wire devices.
+
+## RW1990 support
+The RW1990 is a device that allows to modify the ID of an iButton. It is not
+produced by Dallas, but can be found on Chinese websites.
+
+We were not able to reliable change all RW1990 devices we received. Out of
+10 devices, 4 worked without issues, 4 did not allow to change the IDs at all,
+and 2 had some bits that could not be changed.
 
 ## Trademarks
 The iButton name and logo are trademarks of Maxim Integrated Products, Inc.
