@@ -55,7 +55,7 @@ class Reader:
 An iButton.
 
 The iButton is a small, waterproof, and shock-resistant device that can be used
-  to uniquely identify a person or object. The iButton is a 1-wire device, and
+  to uniquely identify a person or object. The iButton is a hot-pluggable 1-wire device, and
   can be read using the 1-wire bus.
 */
 class IButton:
