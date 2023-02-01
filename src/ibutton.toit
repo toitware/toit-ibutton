@@ -28,6 +28,11 @@ class Reader:
 
   /**
   Scans the reader for an iButton.
+
+  Performs a 1-wire bus reset, to which all devices on the bus must
+    respond. If a device responds, it is assumed to be a single iButton.
+
+  Returns null if no device responds to the bus reset.
   */
   scan -> IButton?:
     if not bus_.reset: return null
@@ -58,7 +63,7 @@ class Reader:
 An iButton.
 
 The iButton is a small, waterproof, and shock-resistant device that can be used
-  to uniquely identify a person or object. The iButton is a 1-wire device, and
+  to uniquely identify a person or object. The iButton is a hot-pluggable 1-wire device, and
   can be read using the 1-wire bus.
 */
 class IButton:
