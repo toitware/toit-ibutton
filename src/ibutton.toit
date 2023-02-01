@@ -87,8 +87,8 @@ class IButton:
 
   The device must have a changeable ID. A typical device would be the RW1990.
 
-  Depending on the version, the ID bits must be written in inverse order.
-    In that case use the $inverse flag.
+  Depending on the version of the RW1990, the ID bits must be written in
+    inverse order. In that case use the $inverse flag.
   */
   write_id id/int --inverse/bool=false:
     if inverse:
