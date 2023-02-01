@@ -17,8 +17,8 @@ See https://pdfserv.maximintegrated.com/en/an/AN4255.pdf for more information on
 how to power 1-wire devices.
 
 ## RW1990 support
-The RW1990 is a device that allows to modify the ID of an iButton. It is not
-produced by Dallas, but can be found on Chinese websites.
+The RW1990 is an iButton device with a changeable ID. It is not
+produced by Dallas, but can frequently be found on Chinese websites.
 
 We were not able to reliable change all RW1990 devices we received. Out of
 10 devices, 4 worked without issues, 4 did not allow changing the IDs at all,
