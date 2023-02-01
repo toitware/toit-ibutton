@@ -19,9 +19,12 @@ class Reader:
 
   /**
   Constructs a reader instance on the 1-wire bus on the given $pin.
+
+  If $pull_up is true, uses the pin's internal pull-up resistor to provide
+    power to the bus.
   */
-  constructor pin/gpio.Pin:
-    bus_ = one_wire.Bus pin
+  constructor pin/gpio.Pin --pull_up/bool=true:
+    bus_ = one_wire.Bus pin --pull_up=pull_up
 
   /**
   Scans the reader for an iButton.
@@ -64,13 +67,56 @@ The iButton is a small, waterproof, and shock-resistant device that can be used
   can be read using the 1-wire bus.
 */
 class IButton:
-  id/int
+  static COMMAND_WRITE_SERIAL_ ::= 0xD5
+
+  id_/int := ?
   bus_/one_wire.Bus
 
   /**
   Constructs an iButton instance.
   */
-  constructor .bus_ .id:
+  constructor .bus_ .id_:
+
+  id -> int: return id_
 
   stringify -> string:
-    return "IButton-$(%016x id)"
+    return "IButton-$(%016x id_)"
+
+  /**
+  Writes the given $id to the iButton.
+
+  The device must have a changeable ID. A typical device would be the RW1990.
+
+  Depending on the version of the RW1990, the ID bits must be written in
+    inverse order. In that case use the $inverse flag.
+  */
+  write_id id/int --inverse/bool=false:
+    if inverse:
+      tmp := id
+      id = 0
+      64.repeat:
+        id = (id << 1) | (tmp & 1)
+        tmp >>= 1
+
+    bus_.read_device_id
+
+    if not bus_.reset: throw "NO_DEVICE"
+    bus_.write_byte 0xD1 --activate_power  // Unlock write.
+    bus_.write_bit 0 --activate_power
+    sleep --ms=10
+
+    if not bus_.reset: throw "NO_DEVICE"
+    // Initiate writing the ID.
+    bus_.write_byte COMMAND_WRITE_SERIAL_ --activate_power
+    64.repeat:
+      // The bits are written inverted.
+      bus_.write_bit (~id & 1) --activate_power
+      id >>= 1
+      sleep --ms=10
+
+    // Lock write.
+    if not bus_.reset: throw "NO_DEVICE"
+    bus_.write_byte 0xD1 --activate_power
+    bus_.write_bit 1 --activate_power
+
+    id_ = bus_.read_device_id
