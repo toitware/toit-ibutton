@@ -21,7 +21,7 @@ The RW1990 is a device that allows to modify the ID of an iButton. It is not
 produced by Dallas, but can be found on Chinese websites.
 
 We were not able to reliable change all RW1990 devices we received. Out of
-10 devices, 4 worked without issues, 4 did not allow to change the IDs at all,
+10 devices, 4 worked without issues, 4 did not allow changing the IDs at all,
 and 2 had some bits that could not be changed.
 
 ## Trademarks
