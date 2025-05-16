@@ -14,10 +14,10 @@ The program waits until it detects an iButton, and then
 import ibutton
 import gpio
 
-READER_PIN ::= 18
+READER-PIN ::= 18
 
 main:
-  reader := ibutton.Reader (gpio.Pin READER_PIN)
+  reader := ibutton.Reader (gpio.Pin READER-PIN)
 
   while true:
     exception := catch:
@@ -25,14 +25,14 @@ main:
         sleep --ms=200
       ibutton := reader.scan
       print "Found iButton: $ibutton"
-      new_msb := 0xDEADBEEF
-      new_lsb := random & 0xFFFFFFFF
+      new-msb := 0xDEADBEEF
+      new-lsb := random & 0xFFFFFFFF
       msb := ibutton.id >>> 32
       if msb == 0xDEADBEEF:
-        new_msb = 0xCAFEBABE
-      new_id := (new_msb << 32) | new_lsb
-      print "updating ID to $(%x new_id)"
-      ibutton.write_id new_id
+        new-msb = 0xCAFEBABE
+      new-id := (new-msb << 32) | new-lsb
+      print "updating ID to $(%x new-id)"
+      ibutton.write-id new-id
       print "After: $ibutton"
       sleep --ms=2000
     if exception: print "Error: $exception"
