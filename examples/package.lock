@@ -1,4 +1,4 @@
-sdk: ^2.0.0-alpha.49
+sdk: ^2.0.0-alpha.180
 prefixes:
   ibutton: ..
 packages:
@@ -8,5 +8,6 @@ packages:
       one_wire: toit-1-wire
   toit-1-wire:
     url: github.com/toitware/toit-1-wire
-    version: 2.1.0
-    hash: 2c4a5268df6bfa5689c30863fd483feda8739171
+    name: one_wire
+    version: 2.4.0
+    hash: bb30a0a4256271191b1b230c1bdea868e7e0a0ca
