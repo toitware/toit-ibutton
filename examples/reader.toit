@@ -5,20 +5,20 @@
 import ibutton
 import gpio
 
-READER_PIN ::= 18
+READER-PIN ::= 18
 
 main:
-  reader := ibutton.Reader (gpio.Pin READER_PIN)
+  reader := ibutton.Reader (gpio.Pin READER-PIN)
 
-  last_id/int? := null
+  last-id/int? := null
   while true:
     exception := catch:
       ibutton := reader.scan
       if not ibutton:
-        last_id = null
-      else if ibutton.id != last_id:
+        last-id = null
+      else if ibutton.id != last-id:
         print "Found: $ibutton"
-        last_id = ibutton.id
+        last-id = ibutton.id
     print "Caught: $exception"
     sleep --ms=200
 

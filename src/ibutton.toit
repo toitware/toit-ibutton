@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import gpio
-import one_wire
+import one-wire
 
 /**
 An iButton reader.
@@ -15,16 +15,16 @@ It assumes that the reader is the only physical device that is attached
   class directly.
 */
 class Reader:
-  bus_/one_wire.Bus
+  bus_/one-wire.Bus
 
   /**
   Constructs a reader instance on the 1-wire bus on the given $pin.
 
-  If $pull_up is true, uses the pin's internal pull-up resistor to provide
+  If $pull-up is true, uses the pin's internal pull-up resistor to provide
     power to the bus.
   */
-  constructor pin/gpio.Pin --pull_up/bool=true:
-    bus_ = one_wire.Bus pin --pull_up=pull_up
+  constructor pin/gpio.Pin --pull-up/bool=true:
+    bus_ = one-wire.Bus pin --pull-up=pull-up
 
   /**
   Scans the reader for an iButton.
@@ -39,21 +39,21 @@ class Reader:
     // Assume that the responding device is an iButton.
     // We could verify the device family, but since this class is
     // really designed for iButtons, we don't bother.
-    return IButton bus_ bus_.read_device_id
+    return IButton bus_ bus_.read-device-id
 
   /**
   Variant of $(scan).
 
   Only returns the device id, and does not create an IButton instance.
   */
-  scan --id_only/bool -> int?:
-    if not id_only: throw "INVALID_ARGUMENT"
+  scan --id-only/bool -> int?:
+    if not id-only: throw "INVALID_ARGUMENT"
     if not bus_.reset: return null
-    return bus_.read_device_id
+    return bus_.read-device-id
 
   /** Whether this reader is closed. */
-  is_closed -> bool:
-    return bus_.is_closed
+  is-closed -> bool:
+    return bus_.is-closed
 
   /** Closes this reader and the underlying bus. */
   close:
@@ -67,10 +67,10 @@ The iButton is a small, waterproof, and shock-resistant device that can be used
   can be read using the 1-wire bus.
 */
 class IButton:
-  static COMMAND_WRITE_SERIAL_ ::= 0xD5
+  static COMMAND-WRITE-SERIAL_ ::= 0xD5
 
   id_/int := ?
-  bus_/one_wire.Bus
+  bus_/one-wire.Bus
 
   /**
   Constructs an iButton instance.
@@ -90,7 +90,7 @@ class IButton:
   Depending on the version of the RW1990, the ID bits must be written in
     inverse order. In that case use the $inverse flag.
   */
-  write_id id/int --inverse/bool=false:
+  write-id id/int --inverse/bool=false:
     if inverse:
       tmp := id
       id = 0
@@ -98,25 +98,25 @@ class IButton:
         id = (id << 1) | (tmp & 1)
         tmp >>= 1
 
-    bus_.read_device_id
+    bus_.read-device-id
 
     if not bus_.reset: throw "NO_DEVICE"
-    bus_.write_byte 0xD1 --activate_power  // Unlock write.
-    bus_.write_bit 0 --activate_power
+    bus_.write-byte 0xD1 --activate-power  // Unlock write.
+    bus_.write-bit 0 --activate-power
     sleep --ms=10
 
     if not bus_.reset: throw "NO_DEVICE"
     // Initiate writing the ID.
-    bus_.write_byte COMMAND_WRITE_SERIAL_ --activate_power
+    bus_.write-byte COMMAND-WRITE-SERIAL_ --activate-power
     64.repeat:
       // The bits are written inverted.
-      bus_.write_bit (~id & 1) --activate_power
+      bus_.write-bit (~id & 1) --activate-power
       id >>= 1
       sleep --ms=10
 
     // Lock write.
     if not bus_.reset: throw "NO_DEVICE"
-    bus_.write_byte 0xD1 --activate_power
-    bus_.write_bit 1 --activate_power
+    bus_.write-byte 0xD1 --activate-power
+    bus_.write-bit 1 --activate-power
 
-    id_ = bus_.read_device_id
+    id_ = bus_.read-device-id
