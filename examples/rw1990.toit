@@ -12,12 +12,11 @@ The program waits until it detects an iButton, and then
 */
 
 import ibutton
-import gpio
 
 READER-PIN ::= 18
 
 main:
-  reader := ibutton.Reader (gpio.Pin READER-PIN)
+  reader := ibutton.Reader READER-PIN
 
   while true:
     exception := catch:

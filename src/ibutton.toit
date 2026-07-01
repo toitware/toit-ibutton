@@ -20,10 +20,15 @@ class Reader:
   /**
   Constructs a reader instance on the 1-wire bus on the given $pin.
 
+  The $pin is a GPIO number. Passing a $gpio.Pin is deprecated; provide the integer
+    GPIO number instead.
+
   If $pull-up is true, uses the pin's internal pull-up resistor to provide
     power to the bus.
   */
-  constructor pin/gpio.Pin --pull-up/bool=true:
+  // __TYPE-MIGRATION__ pin: gpio.Pin. Deprecated. Provide an integer instead.
+  // __TYPE-MIGRATION__ pin: int
+  constructor pin/any --pull-up/bool=true:
     bus_ = one-wire.Bus pin --pull-up=pull-up
 
   /**

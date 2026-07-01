@@ -3,12 +3,11 @@
 // be found in the EXAMPLES_LICENSE file.
 
 import ibutton
-import gpio
 
 READER-PIN ::= 18
 
 main:
-  reader := ibutton.Reader (gpio.Pin READER-PIN)
+  reader := ibutton.Reader READER-PIN
 
   last-id/int? := null
   while true:
