@@ -1,7 +1,7 @@
 name: ibutton
 description: A library to interact with iButton devices.
 environment:
-  sdk: ^2.0.0-alpha.194.1
+  sdk: ^2.0.0-alpha.196
 dependencies:
   one_wire:
     url: github.com/toitware/toit-1-wire
